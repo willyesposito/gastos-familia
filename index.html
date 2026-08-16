@@ -332,10 +332,14 @@
   #gastos .g2-split-y{flex:1;background:repeating-linear-gradient(135deg,#8b5cf6 0 3px,#6d43d6 3px 6px)}
   #gastos .g2-splitlbls{display:flex;justify-content:space-between;margin-top:7px;font-size:10.5px;font-family:ui-monospace,'SF Mono',Consolas,monospace}
 
+  #gastos .g2-fijoresumen{display:flex;align-items:center;gap:8px;margin:0 18px 4px;padding-top:9px;border-top:1px solid #141c2e;font-size:11px;color:#94a3b8;font-family:ui-monospace,'SF Mono',Consolas,monospace}
+  #gastos .g2-fijodot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#334867}
+
   #gastos .g2-bottom{position:relative;flex-shrink:0;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px));background:#0a0f1e}
   #gastos .g2-save{cursor:pointer;width:100%;box-sizing:border-box;border:none;border-radius:15px;height:56px;font-size:15.5px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;margin-top:12px;padding:0 10px;text-align:center}
   #gastos .g2-save.on{background:var(--pa,#3b82f6);color:#04122b}
   #gastos .g2-save.off{background:#111827;color:#3f5675;cursor:default}
+  #gastos .g2-save.blocked{background:#1c2438;color:#7d8aa3;cursor:default}
 
   #gastos .g2-numpad{position:absolute;left:0;right:0;bottom:100%;background:#0a0f1e;border-top:1px solid #1e2d45;padding:10px 12px 12px;box-shadow:0 -14px 30px rgba(0,0,0,.55)}
   #gastos .g2-numpad.hidden{display:none}
@@ -345,11 +349,129 @@
   #gastos .g2-padgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
   #gastos .g2-padkey{cursor:pointer;background:#111827;border:1px solid #1e2d45;border-radius:13px;height:50px;font-size:21px;font-weight:500;color:#f1f5f9;font-family:ui-monospace,'SF Mono',Consolas,monospace;display:flex;align-items:center;justify-content:center;-webkit-user-select:none;user-select:none}
   #gastos .g2-padkey:active{background:color-mix(in srgb,#93b8fb 16%,transparent);border-color:var(--pa,#3b82f6)}
+  #gastos .g2-padgrid.compact .g2-padkey{height:46px}
+
+  #gastos .g2-avisofijo{margin:0 0 10px;border:1px solid rgba(234,179,8,.45);background:rgba(234,179,8,.09);border-radius:16px;padding:13px 15px}
+  #gastos .g2-avisofijo.hidden{display:none}
+  #gastos .g2-avisohead{display:flex;gap:9px;margin-bottom:11px}
+  #gastos .g2-avisoicon{font-size:15px;line-height:1.3}
+  #gastos .g2-avisotitulo{font-size:12.5px;font-weight:700;color:#fde68a;line-height:1.35}
+  #gastos .g2-avisotexto{font-size:11px;color:#a8a08a;line-height:1.5;margin-top:3px}
+  #gastos .g2-avisobtns{display:flex;gap:8px}
+  #gastos .g2-avisobtn-fijo,#gastos .g2-avisobtn-otro{cursor:pointer;flex:1;border-radius:11px;height:42px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 8px}
+  #gastos .g2-avisobtn-fijo{background:#eab308;color:#231b02}
+  #gastos .g2-avisobtn-otro{background:#0a0f1e;border:1px solid #1e2d45;color:#cbd5e1;font-weight:600}
+
+  #gastos .g2-montocard.fijoalert{border-color:rgba(234,179,8,.5)}
+  #gastos .g2-montodisp.fijoalert{color:#eab308}
 
   #gastos .g2-toast{position:absolute;left:14px;right:14px;bottom:100%;margin-bottom:8px;border-radius:14px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:3;font-size:13px;font-weight:700}
   #gastos .g2-toast.hidden{display:none}
   #gastos .g2-toast.ok{background:#10b981;color:#04140e}
   #gastos .g2-toast .undo{cursor:pointer;font-size:12px;font-weight:700;text-decoration:underline;white-space:nowrap;flex-shrink:0}
+
+  /* ---- Lista y resumen del mes (3a) ---- */
+  #lista3a{position:fixed;inset:0;z-index:500;background:#0a0f1e;overflow:hidden;padding:0;display:flex;flex-direction:column;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#f1f5f9}
+  #lista3a.hidden{display:none}
+  #lista3a .g3-fixed{flex-shrink:0;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 14px;border-bottom:1px solid #141c2e}
+  #lista3a .g3-monthnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  #lista3a .g2-back{cursor:pointer;width:28px;height:28px;border-radius:9px;background:#111827;border:1px solid #1e2d45;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  #lista3a .g3-monthlbl{font-size:15px;font-weight:700}
+  #lista3a .g3-monthlbl span:last-child{font-size:11px;font-family:ui-monospace,'SF Mono',Consolas,monospace;color:#64748b;font-weight:400;margin-left:6px}
+  #lista3a .g3-navbtns{display:flex;gap:6px}
+  #lista3a .g3-navbtn{cursor:pointer;width:28px;height:28px;border:1px solid #1e2d45;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#64748b}
+  #lista3a .g3-navbtn.off{color:#2b3a55;cursor:default}
+  #lista3a .g3-totalrow{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:11px}
+  #lista3a .g3-totallbl{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:3px}
+  #lista3a .g3-totalval{font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:38px;font-weight:500;letter-spacing:-2px;line-height:1}
+  #lista3a .g3-totalval .cifra{font-size:20px;color:#64748b;margin-right:4px}
+  #lista3a .g3-semaforo{text-align:right;padding-bottom:3px}
+  #lista3a .g3-semaforo.hidden{display:none}
+  #lista3a .g3-sempill{display:inline-flex;align-items:center;gap:6px;border-radius:9px;padding:5px 9px;font-size:11px;font-weight:700;font-family:ui-monospace,'SF Mono',Consolas,monospace}
+  #lista3a .g3-sempill .dot{width:8px;height:8px;border-radius:50%}
+  #lista3a .g3-sempill.verde{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);color:#10b981}
+  #lista3a .g3-sempill.verde .dot{background:#10b981}
+  #lista3a .g3-sempill.amarillo{background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.35);color:#eab308}
+  #lista3a .g3-sempill.amarillo .dot{background:#eab308}
+  #lista3a .g3-sempill.rojo{background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);color:#f43f5e}
+  #lista3a .g3-sempill.rojo .dot{background:#f43f5e}
+  #lista3a .g3-semof{font-size:10px;color:#64748b;font-family:ui-monospace,'SF Mono',Consolas,monospace;margin-top:5px}
+  #lista3a .g3-split{margin-bottom:8px}
+  #lista3a .g3-split-rest{flex:1;background:#111827}
+  #lista3a .g3-personas{display:flex;gap:8px}
+  #lista3a .g3-pcard{flex:1;display:flex;align-items:center;gap:8px;background:#0e1526;border:1px solid #1e2d45;border-radius:12px;padding:9px 11px}
+  #lista3a .g3-pcard .bd{width:22px;height:22px;border-radius:7px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid}
+  #lista3a .g3-pcard .info{min-width:0}
+  #lista3a .g3-pcard .tot{font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:14px;font-weight:500;line-height:1.1}
+  #lista3a .g3-pcard .meta{font-size:9.5px;color:#64748b;font-family:ui-monospace,'SF Mono',Consolas,monospace;margin-top:2px}
+
+  #lista3a .g3-filters{display:flex;align-items:center;justify-content:space-between;padding:11px 18px 9px;flex-shrink:0}
+  #lista3a .g3-chips{display:flex;gap:6px}
+  #lista3a .g3-chip{cursor:pointer;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:6px 10px;border-radius:9px;background:#111827;border:1px solid #1e2d45;color:#64748b;white-space:nowrap}
+  #lista3a .g3-chip.on{color:#0a0f1e}
+  #lista3a .g3-agrupar{cursor:pointer;font-size:10.5px;font-weight:600;color:#93b8fb;font-family:ui-monospace,'SF Mono',Consolas,monospace;white-space:nowrap}
+
+  #lista3a .g3-list{flex:1;overflow-y:auto;padding:0 18px;-webkit-overflow-scrolling:touch}
+  #lista3a .g3-grouphead{display:flex;align-items:baseline;justify-content:space-between;padding:8px 0 5px}
+  #lista3a .g3-grouptitle{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:1.6px;font-weight:600}
+  #lista3a .g3-grouptotal{font-size:11px;font-family:ui-monospace,'SF Mono',Consolas,monospace;color:#94a3b8}
+  #lista3a .g3-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #141c2e;cursor:pointer}
+  #lista3a .g3-row .bd{width:22px;height:22px;border-radius:7px;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid}
+  #lista3a .g3-row .catbar{width:3px;height:26px;border-radius:2px;flex-shrink:0}
+  #lista3a .g3-row .info{flex:1;min-width:0}
+  #lista3a .g3-row .det{font-size:12.5px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #lista3a .g3-row .meta{font-size:10px;color:#64748b;font-family:ui-monospace,'SF Mono',Consolas,monospace;margin-top:2px}
+  #lista3a .g3-row .monto{font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:13.5px;font-weight:500;color:#e2e8f0;white-space:nowrap}
+  #lista3a .g3-empty{text-align:center;padding:40px 20px;color:#4a5a75;font-size:12px;line-height:1.6}
+
+  #lista3a .g3-fade{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(180deg,rgba(10,15,30,0) 0%,#0a0f1e 55%);pointer-events:none}
+  #lista3a .g3-fab{cursor:pointer;position:absolute;right:18px;bottom:calc(44px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:19px;background:var(--pa,#3b82f6);color:#04122b;font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px rgba(0,0,0,.55)}
+
+  /* ---- Detalle de un gasto (4a) ---- */
+  #detalle{position:fixed;inset:0;z-index:800;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+  #detalle.hidden{display:none}
+  #detalle .det-veil{position:absolute;inset:0;background:rgba(4,7,16,.6)}
+  #detalle .det-sheet{position:absolute;left:0;right:0;bottom:0;background:#0e1526;border-top:1px solid #23324e;border-radius:24px 24px 0 0;padding:12px 18px calc(34px + env(safe-area-inset-bottom,0px));box-shadow:0 -18px 44px rgba(0,0,0,.6);max-height:88vh;overflow-y:auto}
+  #detalle .det-handle{width:40px;height:4px;border-radius:2px;background:#2b3a55;margin:0 auto 14px}
+  #detalle .det-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  #detalle .det-badge{width:28px;height:28px;border-radius:9px;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid;color:#f1f5f9}
+  #detalle .det-titulo{font-size:13px;font-weight:600;line-height:1.2;color:#f1f5f9}
+  #detalle .det-sub{font-size:10px;font-family:ui-monospace,'SF Mono',Consolas,monospace;margin-top:2px}
+  #detalle .det-swap{cursor:pointer;font-size:10.5px;font-weight:600;color:#93b8fb;font-family:ui-monospace,'SF Mono',Consolas,monospace;white-space:nowrap}
+  #detalle .det-montocard{cursor:pointer;border:1px solid #1e2d45;border-radius:16px;background:#0a0f1e;padding:11px 16px 13px;margin-bottom:12px}
+  #detalle .det-montocard.open{border-color:var(--pa,#3b82f6)}
+  #detalle .g2-montolbl{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:600}
+  #detalle .det-montodisp{display:flex;align-items:center;font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:36px;font-weight:500;letter-spacing:-1.5px;color:#f1f5f9;margin-top:2px}
+  #detalle .det-montodisp .cifra{font-size:19px;color:#64748b;margin-right:5px}
+  #detalle .det-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  #detalle .det-cat{cursor:pointer;display:flex;align-items:center;gap:5px;background:#111827;border:1px solid #1e2d45;border-left:2.5px solid var(--cc);border-radius:10px;padding:7px 10px}
+  #detalle .det-cat.sel{background:rgba(148,163,184,.14);border-color:#94a3b8}
+  #detalle .det-cat span:last-child{font-size:11px;font-weight:600;white-space:nowrap;color:#f1f5f9}
+  #detalle .det-row2{display:flex;gap:8px;margin-bottom:12px}
+  #detalle .det-fecha{cursor:pointer;flex:1;display:flex;align-items:center;justify-content:center;gap:7px;background:#0a0f1e;border:1px solid #1e2d45;border-radius:13px;height:46px;font-size:12.5px;font-weight:600;color:#cbd5e1}
+  #detalle .det-del{cursor:pointer;width:58px;display:flex;align-items:center;justify-content:center;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.35);border-radius:13px;height:46px;font-size:17px}
+  #detalle .det-confirm{border:1px solid rgba(244,63,94,.4);background:rgba(244,63,94,.08);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+  #detalle .det-confirm.hidden{display:none}
+  #detalle .det-confirm-text{font-size:12px;font-weight:600;color:#fda4af;line-height:1.45;margin-bottom:10px}
+  #detalle .det-confirm-btns{display:flex;gap:8px}
+  #detalle .det-btn-cancel,#detalle .det-btn-del{cursor:pointer;flex:1;border-radius:11px;height:42px;font-size:12.5px;display:flex;align-items:center;justify-content:center}
+  #detalle .det-btn-cancel{background:#0a0f1e;border:1px solid #1e2d45;color:#cbd5e1;font-weight:600}
+  #detalle .det-btn-del{background:#f43f5e;color:#1a0308;font-weight:700}
+  #detalle .det-save{cursor:pointer;background:var(--pa,#3b82f6);color:#04122b;border-radius:15px;height:54px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  #detalle .det-audit{font-size:10px;color:#4a5a75;font-family:ui-monospace,'SF Mono',Consolas,monospace;text-align:center;margin-top:11px}
+  #detalle .g2-numpad{position:absolute;left:0;right:0;bottom:100%;background:#0a0f1e;border-top:1px solid #23324e;border-radius:20px 20px 0 0;padding:10px 12px 12px;box-shadow:0 -18px 44px rgba(0,0,0,.7)}
+  #detalle .g2-numpad.hidden{display:none}
+  #detalle .g2-padbar{display:flex;align-items:center;justify-content:space-between;padding:0 4px 8px}
+  #detalle .g2-padhint{font-size:11px;color:#94a3b8;font-family:ui-monospace,'SF Mono',Consolas,monospace}
+  #detalle .g2-paddone{cursor:pointer;font-size:11px;font-weight:700;color:#93b8fb}
+  #detalle .g2-padgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  #detalle .g2-padkey{cursor:pointer;background:#111827;border:1px solid #1e2d45;border-radius:13px;height:50px;font-size:21px;font-weight:500;color:#f1f5f9;font-family:ui-monospace,'SF Mono',Consolas,monospace;display:flex;align-items:center;justify-content:center;-webkit-user-select:none;user-select:none}
+  #detalle .g2-padkey:active{border-color:var(--pa,#3b82f6)}
+  #detalle .g2-toast{border-radius:14px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.55);z-index:6;font-size:13px;font-weight:700}
+  #detalle .g2-toast.hidden{display:none}
+  #detalle .g2-toast.ok{background:#10b981;color:#04140e}
+  #detalle .g2-toast.err{background:#f43f5e;color:#1a0308}
+  #detalle .g2-toast .undo{cursor:pointer;font-size:12px;font-weight:700;text-decoration:underline;white-space:nowrap;flex-shrink:0}
 
   /* ---- Período (selector de mes en el header) ---- */
   .period-pick{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:4px}
@@ -605,6 +727,11 @@
     <div class="g2-catsbig" id="g2-catsbig"></div>
     <div class="g2-catssmall" id="g2-catssmall"></div>
 
+    <div class="g2-fijoresumen" id="g2-fijoresumen" style="display:none">
+      <span class="g2-fijodot" id="g2-fijodot"></span>
+      <span id="g2-fijotexto"></span>
+    </div>
+
     <div class="g2-notawrap">
       <input class="g2-nota" id="g2-nota" placeholder="Nota (opcional): ej. carne para el asado" autocomplete="off">
     </div>
@@ -630,6 +757,19 @@
         <span class="g2-padhint">Tipeá el monto</span>
         <span class="g2-paddone" onclick="closeNumpad()">Listo</span>
       </div>
+      <div class="g2-avisofijo hidden" id="g2-avisofijo">
+        <div class="g2-avisohead">
+          <span class="g2-avisoicon">⚠</span>
+          <div>
+            <div class="g2-avisotitulo" id="g2-avisotitulo"></div>
+            <div class="g2-avisotexto">Los fijos se cargan una vez por mes. Si ya lo pagaste, marcalo como pago en vez de sumarlo acá.</div>
+          </div>
+        </div>
+        <div class="g2-avisobtns">
+          <div class="g2-avisobtn-fijo" id="g2-avisobtn-fijo" onclick="fijoMarcarPago()"></div>
+          <div class="g2-avisobtn-otro" onclick="fijoEsOtroGasto()">Es otro gasto</div>
+        </div>
+      </div>
       <div class="g2-padgrid" id="g2-padgrid"></div>
     </div>
     <div class="g2-toast hidden" id="g2-toast">
@@ -637,6 +777,100 @@
       <span class="undo" id="g2-toast-undo">Deshacer</span>
     </div>
     <button class="g2-save off" id="g2-save" onclick="confirmarGasto()">Elegí categoría y monto</button>
+  </div>
+</div>
+
+<!-- Pantalla LISTA Y RESUMEN DEL MES (3a) — total, semáforo de presupuesto y
+     reparto fijos arriba; solo scrollea la lista. -->
+<div id="lista3a" class="hidden">
+  <div class="g3-fixed">
+    <div class="g3-monthnav">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0">
+        <div class="g2-back" onclick="showHome()">←</div>
+        <div class="g3-monthlbl"><span id="g3-mes">—</span><span id="g3-anio"></span></div>
+      </div>
+      <div class="g3-navbtns">
+        <div class="g3-navbtn" id="g3-prev" onclick="lista3aPrev()">‹</div>
+        <div class="g3-navbtn" id="g3-next" onclick="lista3aNext()">›</div>
+      </div>
+    </div>
+    <div class="g3-totalrow">
+      <div>
+        <div class="g3-totallbl">Total del mes</div>
+        <div class="g3-totalval"><span class="cifra">$</span><span id="g3-total">0</span></div>
+      </div>
+      <div class="g3-semaforo" id="g3-semaforo">
+        <div class="g3-sempill" id="g3-sempill"><span class="dot"></span><span id="g3-sempct">—</span></div>
+        <div class="g3-semof" id="g3-semof"></div>
+      </div>
+    </div>
+    <div class="g2-split g3-split"><div class="g2-split-w" id="g3-split-w" style="width:50%"></div><div class="g2-split-y" id="g3-split-y"></div><div class="g3-split-rest" id="g3-split-rest"></div></div>
+    <div class="g3-personas">
+      <div class="g3-pcard" id="g3-pcard-w"></div>
+      <div class="g3-pcard" id="g3-pcard-y"></div>
+    </div>
+  </div>
+
+  <div class="g3-filters">
+    <div class="g3-chips" id="g3-chips"></div>
+    <div class="g3-agrupar" id="g3-agrupar" onclick="toggleAgrupar3a()">por día</div>
+  </div>
+
+  <div class="g3-list" id="g3-list"></div>
+  <div class="g3-fade"></div>
+  <div class="g3-fab" id="g3-fab" onclick="showGastos()">+</div>
+</div>
+
+<!-- Hoja de DETALLE de un gasto (4a) — editar o borrar, se abre desde 2a o 3a. -->
+<div id="detalle" class="hidden">
+  <div class="det-veil" onclick="closeDetalle()"></div>
+  <div class="det-sheet">
+    <div class="det-handle"></div>
+    <div class="det-head">
+      <div class="det-badge" id="det-badge"></div>
+      <div style="flex:1;min-width:0">
+        <div class="det-titulo" id="det-titulo"></div>
+        <div class="det-sub" id="det-sub"></div>
+      </div>
+      <div class="det-swap" onclick="detCambiarPersona()">cambiar ⇄</div>
+    </div>
+
+    <div class="det-montocard" id="det-montocard" onclick="detToggleNumpad()">
+      <div class="g2-montolbl">Monto</div>
+      <div class="det-montodisp" id="det-montodisp"><span class="cifra">$</span><span id="det-montoval">0</span></div>
+    </div>
+
+    <div class="g2-montolbl" style="margin-bottom:8px">Categoría</div>
+    <div class="det-cats" id="det-cats"></div>
+
+    <div class="det-row2">
+      <div class="det-fecha" id="det-fecha" onclick="detPickCalendar()"></div>
+      <div class="det-del" id="det-del" onclick="detAskDelete()">🗑</div>
+    </div>
+    <input type="date" id="det-datepick" style="position:absolute;opacity:0;pointer-events:none;width:0;height:0" onchange="detOnDatePicked(event)">
+
+    <div class="det-confirm hidden" id="det-confirm">
+      <div class="det-confirm-text" id="det-confirm-text"></div>
+      <div class="det-confirm-btns">
+        <div class="det-btn-cancel" onclick="detCancelDelete()">Cancelar</div>
+        <div class="det-btn-del" onclick="detDoDelete()">Borrar</div>
+      </div>
+    </div>
+
+    <div class="det-save" id="det-save" onclick="detGuardar()">Guardar cambios</div>
+    <div class="det-audit" id="det-audit"></div>
+
+    <div class="g2-numpad hidden" id="det-numpad">
+      <div class="g2-padbar">
+        <span class="g2-padhint" id="det-padhint">$0</span>
+        <span class="g2-paddone" onclick="detCloseNumpad()">Listo</span>
+      </div>
+      <div class="g2-padgrid" id="det-padgrid"></div>
+    </div>
+  </div>
+  <div class="g2-toast hidden" id="det-toast" style="position:fixed;left:14px;right:14px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:900">
+    <span id="det-toast-text"></span>
+    <span class="undo" id="det-toast-undo">Deshacer</span>
   </div>
 </div>
 
@@ -1427,6 +1661,30 @@ function addGasto(cat, monto, nota, fechaOverride){
 function delGasto(g){
   gastosRef.update({ list: firebase.firestore.FieldValue.arrayRemove(g) })
     .catch(err => alert("No se pudo borrar: " + err.message));
+}
+// Restaura un gasto exacto (deshacer un borrado). No genera id nuevo: reinserta
+// el mismo objeto que se sacó con delGasto.
+function addGastoExact(g){
+  gastosRef.set({ list: firebase.firestore.FieldValue.arrayUnion(g) }, { merge:true })
+    .catch(err => alert("No se pudo deshacer: " + err.message));
+}
+// Edición de un gasto ya cargado (4a). El array de gastos no admite "update por id"
+// directo (arrayUnion/arrayRemove trabajan con el objeto completo), así que se hace
+// con una transacción: leer la lista, reemplazar el ítem por id, escribir de nuevo.
+// Esto también evita pisar una edición concurrente del otro teléfono.
+function guardarEdicion(g, cambios){
+  return db.runTransaction(function(tx){
+    return tx.get(gastosRef).then(function(doc){
+      var list = (doc.exists && doc.data().list) || [];
+      var idx = -1;
+      for(var i=0;i<list.length;i++){ if(list[i].id === g.id){ idx = i; break; } }
+      if(idx === -1) throw new Error("El gasto ya no existe (puede que lo hayan editado o borrado desde el otro celular).");
+      var actualizado = Object.assign({}, list[idx], cambios, { editadoPor: myPersona().nombre, editadoEn: new Date().toISOString() });
+      list[idx] = actualizado;
+      tx.update(gastosRef, { list: list });
+      return actualizado;
+    });
+  });
 }
 
 document.addEventListener("click", async e => {
@@ -2276,6 +2534,8 @@ function renderAll(){
 function showHome(){
   document.getElementById("home").classList.remove("hidden");
   document.getElementById("gastos").classList.add("hidden");
+  document.getElementById("lista3a").classList.add("hidden");
+  document.getElementById("detalle").classList.add("hidden");
   document.querySelector(".wrap").style.display = "none";
   if(currentUser){
     const nom = (currentUser.displayName || currentUser.email || "").split(" ")[0].split("@")[0];
@@ -2285,12 +2545,16 @@ function showHome(){
 function showDashboard(){
   document.getElementById("home").classList.add("hidden");
   document.getElementById("gastos").classList.add("hidden");
+  document.getElementById("lista3a").classList.add("hidden");
+  document.getElementById("detalle").classList.add("hidden");
   document.querySelector(".wrap").style.display = "";
   if(S) renderAll();
 }
 function showGastos(){
   document.getElementById("home").classList.add("hidden");
   document.getElementById("gastos").classList.remove("hidden");
+  document.getElementById("lista3a").classList.add("hidden");
+  document.getElementById("detalle").classList.add("hidden");
   document.querySelector(".wrap").style.display = "none";
   renderHeaderPersona();
   buildPadKeys();
@@ -2304,9 +2568,13 @@ function showGastos(){
    El numpad es un panel superpuesto sobre el feed — nada del layout se mueve
    al tipear, a diferencia de la versión anterior. */
 let gCatSel = null, gMontoStr = "", gFecha = new Date(), gPadOpen = false;
-let gBigCats = [], gSmallCats = [], gFeedExpanded = false;
+let gBigCats = [], gSmallCats = [];
 let gLastSaved = null, gToastTimer = null;
+let gFijoMatch = null, gFijoDismissedMonto = null;
 const fmtNum = n => Math.round(n||0).toLocaleString("es-AR");
+// Presupuesto total del mes = la misma suma que usa la pestaña "Día a día"
+// (S.variables[].estimado). Es el denominador del semáforo de 3a.
+function presupuestoTotalMes(){ return (S && S.variables || []).reduce((a,v) => a+(v.estimado||0), 0); }
 
 // Agrupa "grandes" (las 4 más usadas este período) vs "chicas" (el resto).
 // Se recalcula solo al abrir la pantalla, nunca gasto a gasto, para que la
@@ -2422,7 +2690,60 @@ function pressKey(key){
   if(gMontoStr.length > 9) gMontoStr = gMontoStr.slice(0,9);
   if(navigator.vibrate) navigator.vibrate(8);
   renderMontoDisplay();
+  checkFijoMatch();
+  renderFijoResumen();
+  renderAvisoFijo();
+}
+
+/* ---- Aviso de gasto fijo (4b): se dispara mientras se tipea, cuando el
+   monto coincide exactamente con un fijo del mes que sigue pendiente. ---- */
+function checkFijoMatch(){
+  const n = gMontoStr ? parseInt(gMontoStr,10) : 0;
+  gFijoMatch = (n > 0 && S && S.fijos) ? (S.fijos.find(f => f.aplica && !f.pagado && f.monto > 0 && f.monto === n) || null) : null;
+}
+function avisoFijoActivo(){ return !!gFijoMatch && gFijoMatch.monto !== gFijoDismissedMonto; }
+function renderFijoResumen(){
+  const el = document.getElementById("g2-fijoresumen"); if(!el) return;
+  if(!S || !S.fijos){ el.style.display = "none"; return; }
+  el.style.display = "flex";
+  const pend = S.fijos.filter(f => f.aplica && !f.pagado).length;
+  const mes = (S.periodo && MES_NOMBRES[S.periodo.mes-1]) || "";
+  const activo = avisoFijoActivo();
+  document.getElementById("g2-fijodot").style.background = activo ? "#eab308" : "#334867";
+  document.getElementById("g2-fijotexto").textContent = pend + " fijo" + (pend===1?"":"s") + " pendiente" + (pend===1?"":"s") + " de " + mes
+    + " · " + (activo ? "1 coincide con este monto" : "ninguno coincide");
+}
+function renderAvisoFijo(){
+  const wrap = document.getElementById("g2-avisofijo");
+  const activo = avisoFijoActivo();
+  wrap.classList.toggle("hidden", !activo);
+  document.getElementById("g2-padgrid").classList.toggle("compact", activo);
+  document.getElementById("g2-montocard").classList.toggle("fijoalert", activo);
+  document.getElementById("g2-montodisp").classList.toggle("fijoalert", activo);
+  if(activo){
+    document.getElementById("g2-avisotitulo").textContent = "Este monto es el de " + gFijoMatch.nombre;
+    document.getElementById("g2-avisobtn-fijo").textContent = "Marcar " + gFijoMatch.nombre + " pago";
+  }
   updateSaveBtn();
+}
+function fijoMarcarPago(){
+  if(!gFijoMatch) return;
+  const idx = S.fijos.indexOf(gFijoMatch);
+  if(idx === -1) return;
+  const nombre = gFijoMatch.nombre;
+  toggleField("fijos", idx, "pagado");
+  closeNumpad();
+  gMontoStr = ""; gFijoMatch = null; gFijoDismissedMonto = null;
+  renderMontoDisplay();
+  renderFijoResumen();
+  renderAvisoFijo();
+  showToast(nombre + " marcado como pago", null);
+}
+function fijoEsOtroGasto(){
+  if(!gFijoMatch) return;
+  gFijoDismissedMonto = gFijoMatch.monto;
+  renderFijoResumen();
+  renderAvisoFijo();
 }
 function renderMontoDisplay(){
   const n = gMontoStr ? parseInt(gMontoStr,10) : 0;
@@ -2442,13 +2763,16 @@ function renderMontoDisplay(){
 function updateSaveBtn(){
   const n = gMontoStr ? parseInt(gMontoStr,10) : 0;
   const btn = document.getElementById("g2-save");
-  const ok = n > 0 && !!gCatSel;
-  btn.classList.toggle("on", ok);
-  btn.classList.toggle("off", !ok);
-  btn.textContent = ok ? ("Guardar · " + gCatSel + " " + fmt(n)) : "Elegí categoría y monto";
+  const bloqueado = avisoFijoActivo();
+  const ok = n > 0 && !!gCatSel && !bloqueado;
+  btn.classList.remove("on","off","blocked");
+  if(bloqueado){ btn.classList.add("blocked"); btn.textContent = "Resolvé el aviso para guardar"; }
+  else if(ok){ btn.classList.add("on"); btn.textContent = "Guardar · " + gCatSel + " " + fmt(n); }
+  else { btn.classList.add("off"); btn.textContent = "Elegí categoría y monto"; }
 }
 function resetGastoEntry(){
   gCatSel = null; gMontoStr = ""; gFecha = new Date();
+  gFijoMatch = null; gFijoDismissedMonto = null;
   const nota = document.getElementById("g2-nota"); if(nota) nota.value = "";
   closeNumpad();
   computeCatGroups();
@@ -2456,11 +2780,13 @@ function resetGastoEntry(){
   updateMontoUltimo();
   renderMontoDisplay();
   renderFecha();
+  renderFijoResumen();
+  renderAvisoFijo();
   updateSaveBtn();
 }
 function confirmarGasto(){
   const n = gMontoStr ? parseInt(gMontoStr,10) : 0;
-  if(!gCatSel || n <= 0) return;
+  if(!gCatSel || n <= 0 || avisoFijoActivo()) return;
   const notaEl = document.getElementById("g2-nota");
   const nota = notaEl.value.trim();
   const g = addGasto(gCatSel, n, nota, gFecha);
@@ -2470,9 +2796,11 @@ function confirmarGasto(){
     if(gLastSaved){ delGasto(gLastSaved); gLastSaved = null; }
   });
   closeNumpad();
-  gMontoStr = "";
+  gMontoStr = ""; gFijoMatch = null; gFijoDismissedMonto = null;
   notaEl.value = "";
   renderMontoDisplay();
+  renderFijoResumen();
+  renderAvisoFijo();
   updateSaveBtn();
   // la categoría queda seleccionada: es común cargar dos gastos seguidos de la misma
 }
@@ -2481,6 +2809,7 @@ function showToast(text, onUndo){
   clearTimeout(gToastTimer);
   document.getElementById("g2-toast-text").textContent = text;
   const undoBtn = document.getElementById("g2-toast-undo");
+  undoBtn.style.display = onUndo ? "" : "none";
   undoBtn.onclick = () => { onUndo && onUndo(); hideToast(); };
   t.className = "g2-toast ok";
   gToastTimer = setTimeout(hideToast, 4000);
@@ -2490,18 +2819,15 @@ function hideToast(){
   clearTimeout(gToastTimer);
 }
 
-/* ---- Feed "Últimos, de los dos" (con link para ver el mes completo) ---- */
-function toggleFeedExpand(){ gFeedExpanded = !gFeedExpanded; renderFeed(); }
+/* ---- Feed "Últimos, de los dos" (con link a la lista completa del mes: 3a) ---- */
 function renderFeed(){
   const wrap = document.getElementById("g2-feed"); if(!wrap) return;
   const lbl = document.getElementById("g2-feed-label");
   const per = periodoActual();
   const monthItems = GASTOS_CACHE.filter(g => g.periodo === per).sort((a,b) => (b.ts||"").localeCompare(a.ts||""));
-  const items = gFeedExpanded ? monthItems : monthItems.slice(0,3);
-  const totMes = monthItems.reduce((a,g) => a+(g.monto||0), 0);
+  const items = monthItems.slice(0,3);
   lbl.innerHTML = "Últimos, de los dos"
-    + (monthItems.length > 3 ? ' <span class="g2-feedtoggle" onclick="toggleFeedExpand()">'
-        + (gFeedExpanded ? "ver menos" : "ver el mes · " + fmt(totMes)) + " ›</span>" : "");
+    + (monthItems.length ? ' <span class="g2-feedtoggle" onclick="showLista3a()">ver el mes · ' + fmt(monthItems.reduce((a,g)=>a+(g.monto||0),0)) + " ›</span>" : "");
   if(!items.length){ wrap.innerHTML = '<div style="font-size:11px;color:#4a5a75;padding:9px 0">Todavía no hay gastos cargados.</div>'; return; }
   wrap.innerHTML = items.map(g => {
     const p = personaOf(g);
@@ -2512,7 +2838,7 @@ function renderFeed(){
   wrap.querySelectorAll(".g2-frow").forEach(row => {
     row.onclick = () => {
       const g = GASTOS_CACHE.find(x => String(x.id) === row.dataset.id);
-      if(g && confirm("¿Borrar este gasto de " + personaOf(g).nombre + ": " + g.cat + " " + fmt(g.monto) + "?")) delGasto(g);
+      if(g) openDetalle(g, "gastos");
     };
   });
 }
@@ -2536,6 +2862,366 @@ function renderGastos(){
   renderCatGrid();
   renderFeed();
   renderHoyEntreLosDos();
+  renderFijoResumen();
+  if(document.getElementById("lista3a") && !document.getElementById("lista3a").classList.contains("hidden")) renderLista3a();
+}
+
+/* ============================================================
+   LISTA Y RESUMEN DEL MES (3a)
+   ============================================================ */
+let list3aPeriodo = null, list3aFiltro = "Todos", list3aAgrupar = "dia";
+
+function parsePeriodoLabel(label){
+  const parts = (label||"").trim().split(" ");
+  const anio = parseInt(parts[parts.length-1],10) || 0;
+  const mesNombre = parts.slice(0,-1).join(" ").toLowerCase();
+  const mes = MES_NOMBRES.findIndex(m => m.toLowerCase() === mesNombre) + 1;
+  return { label, mes: mes || 0, anio };
+}
+function periodosDisponibles(){
+  const set = new Set(GASTOS_CACHE.map(g => g.periodo));
+  set.add(periodoActual());
+  return [...set].map(parsePeriodoLabel).sort((a,b) => a.anio - b.anio || a.mes - b.mes).map(x => x.label);
+}
+function parseFechaAR(fecha){
+  const partes = (fecha||"").split("/").map(Number);
+  return new Date(partes[2] || 2026, (partes[1]||1) - 1, partes[0] || 1);
+}
+function horaCorta(g){
+  const d = g.ts ? new Date(g.ts) : null;
+  return d ? d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}) : "";
+}
+function fechaCorta(g){
+  const d = parseFechaAR(g.fecha);
+  const dow = ["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"][d.getDay()];
+  return dow + " " + String(d.getDate()).padStart(2,"0");
+}
+
+function showLista3a(){
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("gastos").classList.add("hidden");
+  document.querySelector(".wrap").style.display = "none";
+  document.getElementById("lista3a").classList.remove("hidden");
+  list3aPeriodo = periodoActual();
+  list3aFiltro = "Todos";
+  renderLista3a();
+}
+function lista3aPrev(){
+  const periodos = periodosDisponibles();
+  const idx = periodos.indexOf(list3aPeriodo);
+  if(idx > 0){ list3aPeriodo = periodos[idx-1]; renderLista3a(); }
+}
+function lista3aNext(){
+  const periodos = periodosDisponibles();
+  const idx = periodos.indexOf(list3aPeriodo);
+  if(idx >= 0 && idx < periodos.length-1){ list3aPeriodo = periodos[idx+1]; renderLista3a(); }
+}
+function pcardHtml(p, total, pct, n){
+  return '<div class="bd" style="background:'+p.badgeBg+';color:'+p.badgeFg+';border-color:'+p.accent+'">'+p.ini+'</div>'
+    + '<div class="info"><div class="tot">'+fmt(total)+'</div><div class="meta">'+pct+"% · "+n+" gasto"+(n===1?"":"s")+"</div></div>";
+}
+function renderLista3a(){
+  if(!list3aPeriodo) list3aPeriodo = periodoActual();
+  const periodos = periodosDisponibles();
+  const idx = periodos.indexOf(list3aPeriodo);
+  document.getElementById("g3-prev").classList.toggle("off", idx <= 0);
+  document.getElementById("g3-next").classList.toggle("off", idx < 0 || idx >= periodos.length-1);
+
+  const info = parsePeriodoLabel(list3aPeriodo);
+  document.getElementById("g3-mes").textContent = MES_NOMBRES[info.mes-1] || list3aPeriodo;
+  document.getElementById("g3-anio").textContent = info.anio || "";
+
+  const items = GASTOS_CACHE.filter(g => g.periodo === list3aPeriodo);
+  const total = items.reduce((a,g) => a+(g.monto||0), 0);
+  document.getElementById("g3-total").textContent = fmtNum(total);
+
+  const esActual = list3aPeriodo === periodoActual();
+  const semEl = document.getElementById("g3-semaforo");
+  const presu = presupuestoTotalMes();
+  if(esActual && S && presu > 0){
+    const pct = Math.round(total/presu*100);
+    const nivel = pct >= 95 ? "rojo" : pct >= 75 ? "amarillo" : "verde";
+    semEl.classList.remove("hidden");
+    document.getElementById("g3-sempill").className = "g3-sempill " + nivel;
+    document.getElementById("g3-sempct").textContent = pct + "%";
+    document.getElementById("g3-semof").textContent = "de " + fmt(presu);
+  } else {
+    semEl.classList.add("hidden");
+  }
+
+  const totW = items.filter(g => personaOf(g).ini==="W").reduce((a,g)=>a+(g.monto||0),0);
+  const totY = items.filter(g => personaOf(g).ini==="Y").reduce((a,g)=>a+(g.monto||0),0);
+  const nW = items.filter(g => personaOf(g).ini==="W").length;
+  const nY = items.filter(g => personaOf(g).ini==="Y").length;
+  let wPct, yPct, restPct;
+  if(esActual && presu > 0){
+    wPct = totW/presu*100; yPct = totY/presu*100; restPct = Math.max(100 - wPct - yPct, 0);
+  } else {
+    const tot = totW+totY;
+    wPct = tot>0 ? totW/tot*100 : 50; yPct = tot>0 ? totY/tot*100 : 50; restPct = 0;
+  }
+  document.getElementById("g3-split-w").style.width = wPct + "%";
+  document.getElementById("g3-split-y").style.cssText = "flex:none;width:" + yPct + "%";
+  document.getElementById("g3-split-rest").style.width = restPct + "%";
+
+  const totWY = totW+totY;
+  document.getElementById("g3-pcard-w").innerHTML = pcardHtml(PERSONAS.W, totW, totWY>0?Math.round(totW/totWY*100):0, nW);
+  document.getElementById("g3-pcard-y").innerHTML = pcardHtml(PERSONAS.Y, totY, totWY>0?Math.round(totY/totWY*100):0, nY);
+
+  renderChips3a();
+  renderLista3aList();
+}
+function renderChips3a(){
+  const wrap = document.getElementById("g3-chips");
+  const defs = [
+    {key:"Todos", label:"Todos", color:"#94a3b8"},
+    {key:"Willy", label:"Willy", color:PERSONAS.W.accent},
+    {key:"Yani", label:"Yani", color:PERSONAS.Y.accent}
+  ];
+  wrap.innerHTML = defs.map(f => {
+    const on = list3aFiltro === f.key;
+    return '<div class="g3-chip'+(on?" on":"")+'" style="'+(on?"background:"+f.color+";border-color:"+f.color:"")+'" data-k="'+f.key+'">'+f.label+"</div>";
+  }).join("");
+  wrap.querySelectorAll(".g3-chip").forEach(el => {
+    el.onclick = () => { list3aFiltro = el.dataset.k; renderChips3a(); renderLista3aList(); updateFab3aColor(); };
+  });
+  document.getElementById("g3-agrupar").textContent = list3aAgrupar === "dia" ? "por categoría" : "por día";
+  updateFab3aColor();
+}
+function toggleAgrupar3a(){ list3aAgrupar = list3aAgrupar === "dia" ? "categoria" : "dia"; renderChips3a(); renderLista3aList(); }
+function updateFab3aColor(){
+  const p = list3aFiltro === "Willy" ? PERSONAS.W : list3aFiltro === "Yani" ? PERSONAS.Y : myPersona();
+  document.getElementById("lista3a").style.setProperty("--pa", p.accent);
+}
+function renderLista3aList(){
+  const wrap = document.getElementById("g3-list");
+  let items = GASTOS_CACHE.filter(g => g.periodo === list3aPeriodo);
+  if(list3aFiltro !== "Todos") items = items.filter(g => personaOf(g).nombre === list3aFiltro);
+  if(!items.length){ wrap.innerHTML = '<div class="g3-empty">Sin gastos en este período'+(list3aFiltro!=="Todos"?" para "+list3aFiltro:"")+".</div>"; return; }
+
+  const hoyStr = new Date().toLocaleDateString("es-AR");
+  const ayerD = new Date(); ayerD.setDate(ayerD.getDate()-1);
+  const ayerStr = ayerD.toLocaleDateString("es-AR");
+
+  const groups = {}; const order = [];
+  items.forEach(g => {
+    let key, titulo;
+    if(list3aAgrupar === "dia"){
+      key = g.fecha;
+      titulo = g.fecha === hoyStr ? "HOY · " + fechaCorta(g) : g.fecha === ayerStr ? "AYER · " + fechaCorta(g) : fechaCorta(g);
+    } else { key = g.cat; titulo = g.cat; }
+    if(!groups[key]){ groups[key] = { titulo, items: [], total: 0 }; order.push(key); }
+    groups[key].items.push(g); groups[key].total += (g.monto||0);
+  });
+  const keys = list3aAgrupar === "dia"
+    ? order.slice().sort((a,b) => (groups[b].items[0].ts||"").localeCompare(groups[a].items[0].ts||""))
+    : order.slice().sort((a,b) => groups[b].total - groups[a].total);
+
+  wrap.innerHTML = keys.map(k => {
+    const grp = groups[k];
+    const rows = [...grp.items].sort((a,b) => (b.ts||"").localeCompare(a.ts||"")).map(g => {
+      const p = personaOf(g);
+      const cat = CATS_GASTOS.find(c => c.cat === g.cat);
+      const meta = list3aAgrupar === "categoria" ? (p.nombre + " · " + horaCorta(g)) : (g.cat + " · " + horaCorta(g));
+      return '<div class="g3-row" data-id="'+g.id+'">'
+        + '<div class="bd" style="background:'+p.badgeBg+';color:'+p.badgeFg+';border-color:'+p.accent+'">'+p.ini+'</div>'
+        + '<div class="catbar" style="background:'+(cat?cat.color:"#64748b")+'"></div>'
+        + '<div class="info"><div class="det">'+escapeHtml(g.nota||g.cat)+'</div><div class="meta">'+escapeHtml(meta)+'</div></div>'
+        + '<div class="monto">'+fmt(g.monto)+"</div></div>";
+    }).join("");
+    return '<div><div class="g3-grouphead"><span class="g3-grouptitle">'+escapeHtml(grp.titulo)+'</span><span class="g3-grouptotal">'+fmt(grp.total)+"</span></div>"+rows+"</div>";
+  }).join("");
+
+  wrap.querySelectorAll(".g3-row").forEach(row => {
+    row.onclick = () => {
+      const g = GASTOS_CACHE.find(x => String(x.id) === row.dataset.id);
+      if(g) openDetalle(g, "lista3a");
+    };
+  });
+}
+
+/* ============================================================
+   DETALLE DE UN GASTO (4a) — bottom sheet: editar o borrar.
+   Los dos pueden editar y borrar todo; si el gasto es del otro se avisa.
+   ============================================================ */
+let detGasto = null, detCatSel = null, detMontoStr = "", detFecha = null, detPadOpen = false, detOrigin = null, detToastTimer = null;
+
+function esHoyDate(d){ const h=new Date(); return d.getFullYear()===h.getFullYear() && d.getMonth()===h.getMonth() && d.getDate()===h.getDate(); }
+function fechaLargaDet(g){
+  const d = g.ts ? new Date(g.ts) : parseFechaAR(g.fecha);
+  const dow = ["dom","lun","mar","mié","jue","vie","sáb"][d.getDay()];
+  return dow + " " + String(d.getDate()).padStart(2,"0") + "/" + String(d.getMonth()+1).padStart(2,"0") + " · " + horaCorta(g);
+}
+function openDetalle(g, origin){
+  detGasto = g; detOrigin = origin || "gastos";
+  detCatSel = g.cat; detMontoStr = String(g.monto);
+  detFecha = parseFechaAR(g.fecha);
+  detPadOpen = false;
+
+  const p = personaOf(g);
+  document.getElementById("detalle").style.setProperty("--pa", p.accent);
+  const badge = document.getElementById("det-badge");
+  badge.textContent = p.ini; badge.style.background = p.badgeBg; badge.style.color = p.badgeFg; badge.style.borderColor = p.accent;
+
+  const soyYo = p.ini === personaKeyFromEmail(currentUser && currentUser.email);
+  const sub = document.getElementById("det-sub");
+  if(soyYo){
+    document.getElementById("det-titulo").textContent = "Tu gasto";
+    sub.textContent = fechaLargaDet(g); sub.style.color = "#64748b";
+  } else {
+    document.getElementById("det-titulo").textContent = "Gasto de " + p.nombre;
+    sub.textContent = "lo estás editando vos · " + fechaLargaDet(g); sub.style.color = "#eab308";
+  }
+
+  renderDetCats();
+  renderDetMonto();
+  renderDetFecha();
+  document.getElementById("det-confirm").classList.add("hidden");
+  document.getElementById("det-numpad").classList.add("hidden");
+  document.getElementById("det-montocard").classList.remove("open");
+  renderDetAudit();
+  buildDetPadKeys();
+  document.querySelector("#detalle .det-veil").style.display = "";
+  document.querySelector("#detalle .det-sheet").style.display = "";
+  document.getElementById("detalle").classList.remove("hidden");
+}
+function closeDetalleSheetOnly(){
+  document.querySelector("#detalle .det-veil").style.display = "none";
+  document.querySelector("#detalle .det-sheet").style.display = "none";
+}
+function closeDetalle(){
+  document.getElementById("detalle").classList.add("hidden");
+  document.querySelector("#detalle .det-veil").style.display = "";
+  document.querySelector("#detalle .det-sheet").style.display = "";
+  detGasto = null;
+}
+function renderDetCats(){
+  const wrap = document.getElementById("det-cats");
+  wrap.innerHTML = CATS_GASTOS.map(c =>
+    '<div class="det-cat'+(detCatSel===c.cat?" sel":"")+'" style="--cc:'+c.color+'" data-cat="'+escapeHtml(c.cat)+'"><span>'+c.icon+"</span><span>"+escapeHtml(c.cat)+"</span></div>"
+  ).join("");
+  wrap.querySelectorAll(".det-cat").forEach(el => el.onclick = () => { detCatSel = el.dataset.cat; renderDetCats(); });
+}
+function renderDetMonto(){
+  const n = detMontoStr ? parseInt(detMontoStr,10) : 0;
+  document.getElementById("det-montoval").textContent = n ? fmtNum(n) : "0";
+  document.getElementById("det-padhint").textContent = "$ " + (n ? fmtNum(n) : "0");
+  let caret = document.getElementById("det-caret");
+  const dispEl = document.getElementById("det-montodisp");
+  if(detPadOpen){
+    if(!caret){ caret = document.createElement("span"); caret.id="det-caret"; caret.className="g2-caret"; caret.style.background="var(--pa,#3b82f6)"; caret.style.height="30px"; dispEl.appendChild(caret); }
+  } else if(caret){ caret.remove(); }
+}
+function detToggleNumpad(){
+  detPadOpen = !detPadOpen;
+  document.getElementById("det-numpad").classList.toggle("hidden", !detPadOpen);
+  document.getElementById("det-montocard").classList.toggle("open", detPadOpen);
+  renderDetMonto();
+}
+function detCloseNumpad(){
+  detPadOpen = false;
+  document.getElementById("det-numpad").classList.add("hidden");
+  document.getElementById("det-montocard").classList.remove("open");
+  renderDetMonto();
+}
+function buildDetPadKeys(){
+  const grid = document.getElementById("det-padgrid"); if(!grid || grid.childElementCount) return;
+  ["1","2","3","4","5","6","7","8","9","000","0","⌫"].forEach(key => {
+    const b = document.createElement("div");
+    b.className = "g2-padkey"; b.textContent = key;
+    b.onclick = () => detPressKey(key);
+    grid.appendChild(b);
+  });
+}
+function detPressKey(key){
+  if(key === "⌫") detMontoStr = detMontoStr.slice(0,-1);
+  else if(key === "000"){ if(detMontoStr !== "") detMontoStr += "000"; }
+  else if(key === "0"){ if(detMontoStr !== "") detMontoStr += "0"; }
+  else if(detMontoStr.length < 9) detMontoStr += key;
+  if(detMontoStr.length > 9) detMontoStr = detMontoStr.slice(0,9);
+  if(navigator.vibrate) navigator.vibrate(8);
+  renderDetMonto();
+}
+function renderDetFecha(){
+  const dow = ["dom","lun","mar","mié","jue","vie","sáb"][detFecha.getDay()];
+  document.getElementById("det-fecha").textContent = "📅 " + dow + " " + String(detFecha.getDate()).padStart(2,"0") + "/" + String(detFecha.getMonth()+1).padStart(2,"0");
+}
+function detPickCalendar(){ document.getElementById("det-datepick").click(); }
+function detOnDatePicked(e){
+  const v = e.target.value; if(!v) return;
+  const [y,m,d] = v.split("-").map(Number);
+  detFecha = new Date(y, m-1, d);
+  renderDetFecha();
+}
+function detCambiarPersona(){
+  if(!detGasto) return;
+  const cur = personaOf(detGasto);
+  const otro = cur.ini === "W" ? PERSONAS.Y : PERSONAS.W;
+  const badge = document.getElementById("det-badge");
+  badge.textContent = otro.ini; badge.style.background = otro.badgeBg; badge.style.color = otro.badgeFg; badge.style.borderColor = otro.accent;
+  detGasto = Object.assign({}, detGasto, { persona: otro.ini, titular: otro.nombre });
+  const soyYo = otro.ini === personaKeyFromEmail(currentUser && currentUser.email);
+  document.getElementById("det-titulo").textContent = soyYo ? "Tu gasto" : "Gasto de " + otro.nombre;
+  const sub = document.getElementById("det-sub");
+  sub.textContent = (soyYo?"":"lo estás editando vos · ") + fechaLargaDet(detGasto);
+  sub.style.color = soyYo ? "#64748b" : "#eab308";
+  document.getElementById("detalle").style.setProperty("--pa", otro.accent);
+}
+function detAskDelete(){
+  const p = personaOf(detGasto);
+  const soyYo = p.ini === personaKeyFromEmail(currentUser && currentUser.email);
+  document.getElementById("det-confirm-text").textContent =
+    "Se borra " + (soyYo?"tu gasto":"un gasto de "+p.nombre) + ": " + detGasto.cat + " " + fmt(detGasto.monto) + ". Podés deshacer justo después.";
+  document.getElementById("det-confirm").classList.remove("hidden");
+}
+function detCancelDelete(){ document.getElementById("det-confirm").classList.add("hidden"); }
+function detDoDelete(){
+  const g = detGasto;
+  delGasto(g);
+  closeDetalleSheetOnly();
+  detShowToast("Gasto borrado", "err", () => addGastoExact(g));
+  if(detOrigin === "gastos") renderGastos(); else renderLista3a();
+}
+function detGuardar(){
+  if(!detGasto) return;
+  const n = detMontoStr ? parseInt(detMontoStr,10) : 0;
+  if(n <= 0 || !detCatSel) return;
+  const original = detGasto;
+  const cambios = { monto:n, cat:detCatSel, fecha:detFecha.toLocaleDateString("es-AR"), titular:detGasto.titular, persona:detGasto.persona };
+  guardarEdicion(original, cambios).then(() => {
+    closeDetalleSheetOnly();
+    detShowToast("Cambios guardados", "ok", () => {
+      guardarEdicion(original, { monto:original.monto, cat:original.cat, fecha:original.fecha, titular:original.titular, persona:original.persona });
+    });
+    if(detOrigin === "gastos") renderGastos(); else renderLista3a();
+  }).catch(err => alert(err.message || "No se pudo guardar"));
+}
+function renderDetAudit(){
+  const g = detGasto;
+  const el = document.getElementById("det-audit");
+  const cargador = personaOf(g).nombre;
+  if(g.editadoPor){
+    const d = g.editadoEn ? new Date(g.editadoEn) : null;
+    const cuando = d ? (esHoyDate(d) ? "hoy " : (d.toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit"})+" ")) + d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}) : "";
+    el.textContent = "cargado por " + cargador + " · editado por " + g.editadoPor + " " + cuando;
+  } else {
+    el.textContent = "cargado por " + cargador + " · sin ediciones";
+  }
+}
+function detShowToast(text, kind, onUndo){
+  const t = document.getElementById("det-toast");
+  clearTimeout(detToastTimer);
+  document.getElementById("det-toast-text").textContent = text;
+  const undoBtn = document.getElementById("det-toast-undo");
+  undoBtn.style.display = onUndo ? "" : "none";
+  undoBtn.onclick = () => { onUndo && onUndo(); detHideToast(); };
+  t.className = "g2-toast " + (kind==="err" ? "err" : "ok");
+  detToastTimer = setTimeout(detHideToast, 4000);
+}
+function detHideToast(){
+  document.getElementById("det-toast").classList.add("hidden");
+  clearTimeout(detToastTimer);
+  closeDetalle();
 }
 
 /* ============================================================
